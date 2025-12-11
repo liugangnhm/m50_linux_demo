@@ -1,0 +1,1188 @@
+syntax = "proto3";
+
+option go_package = "com.rfid.core/service/vup";
+option java_multiple_files = true;
+option java_package = "com.rfid.core.service.vup";
+option java_outer_classname = "VupProto";
+
+service VupService {
+  rpc Ping(MessageBase) returns (MessageBase) {}
+  rpc StopAuto(MessageBase) returns (MessageBase) {}
+  rpc Disconnect(MessageBase) returns (MessageBase) {}
+  // ConnectRs connect rs232/485
+  rpc ConnectRs(ConnectRSRequest) returns (ConnectResponse) {}
+
+  rpc ConnectR2000Rs(ConnectRSRequestWithDeviceConfig)
+    returns (ConnectResponse) {}
+
+  // ConnectRsIBat2000 connect rs232/485
+  rpc ConnectRsIBat2000(ConnectRSRequest) returns (ConnectResponse) {}
+
+  rpc ConnectUSB(MessageBase) returns (ConnectResponse) {}
+
+  // Connect via tcp/udp
+  rpc ConnectNet(ConnectNetRequest) returns (ConnectResponse) {}
+  // GetBaud for rs232/485
+  rpc GetBaud(GetBaudRequest) returns (GetBaudResponse) {}
+  // SetBaud
+  rpc SetBaud(SetBaudRequest) returns (MessageBase) {}
+  // SetRs485Address
+  rpc SetRs485Address(SetRs485AddressRequest) returns (MessageBase) {}
+  // GetRs485Address
+  rpc GetRs485Address(MessageBase) returns (GetRs485AddressResponse) {}
+  // GetVersion
+  rpc GetVersion(MessageBase) returns (GetVersionResponse) {}
+  // SetRelay
+  rpc SetRelay(SetRelayRequest) returns (MessageBase) {}
+  // GetRelay
+  rpc GetRelay(GetRelayRequest) returns (GetRelayResponse) {}
+  // SetRelayOption
+  rpc SetRelayOption(SetRelayOptionRequest) returns (MessageBase) {}
+  // GetRelayOption
+  rpc GetRelayOption(GetRelayOptionRequest) returns (GetRelayOptionResponse) {}
+  // SetBuzz
+  rpc SetBuzz(SetBuzzRequest) returns (MessageBase) {}
+  // GetBuzz
+  rpc GetBuzz(MessageBase) returns (GetBuzzResponse) {}
+  // GetWorkMode
+  rpc GetWorkMode(MessageBase) returns (GetWorkModeResponse) {}
+  // SetWorkMode
+  rpc SetWorkMode(SetWorkModeRequest) returns (MessageBase) {}
+  // SetPower
+  rpc SetPower(SetPowerRequest) returns (MessageBase) {}
+  // GetPower
+  rpc GetPower(GetPowerRequest) returns (GetPowerResponse) {}
+  // SetUserFreq
+  rpc SetUserFreq(SetUserFreqRequest) returns (MessageBase) {}
+  // GetUserFreq
+  rpc GetUserFreq(MessageBase) returns (GetUserFreqResponse) {}
+  // SetInventoryAnts
+  rpc SetInventoryAnts(SetInventoryAntsRequest) returns (MessageBase) {}
+  // GetInventoryAnts
+  rpc GetInventoryAnts(MessageBase) returns (GetInventoryAntsResponse) {}
+  // Factory
+  rpc Factory(MessageBase) returns (MessageBase) {}
+  // Reboot
+  rpc Reboot(MessageBase) returns (MessageBase) {}
+  // SetTime
+  rpc SetTime(TimeMessage) returns (MessageBase) {}
+  // GetTime
+  rpc GetTime(MessageBase) returns (TimeMessage) {}
+  // SetLessTagAlgorithm
+  rpc SetLessTagAlgorithm(SetLessTagAlgorithmRequest) returns (MessageBase) {}
+  // GetLessTagAlgorithm
+  rpc GetLessTagAlgorithm(MessageBase) returns (GetLessTagAlgorithmResponse) {}
+  // SetFilter
+  rpc SetFilter(SetFilterRequest) returns (MessageBase) {}
+  // GetFilter
+  rpc GetFilter(MessageBase) returns (GetFilterResponse) {}
+  // SetTagAlarm
+  rpc SetTagAlarm(SetTagAlarmRequest) returns (MessageBase) {}
+  // GetTagAlarm
+  rpc GetTagAlarm(MessageBase) returns (GetTagAlarmResponse) {}
+  // SetTagType
+  rpc SetTagType(SetTagTypeRequest) returns (MessageBase) {}
+  // GetTagType
+  rpc GetTagType(MessageBase) returns (GetTagTypeResponse) {}
+  // SetNetworkParam
+  rpc SetNetworkParam(SetNetworkParamRequest) returns (MessageBase) {}
+  // GetNetworkParam
+  rpc GetNetworkParam(MessageBase) returns (GetNetworkParamResponse) {}
+  // SetMac
+  rpc SetMac(SetMacRequest) returns (MessageBase) {}
+  // GetMac
+  rpc GetMac(MessageBase) returns (GetMacResponse) {}
+  // SetReportPort
+  rpc SetReportPort(SetReportPortRequest) returns (MessageBase) {}
+  // GetReportPort
+  rpc GetReportPort(SetReportPortRequest) returns (SetReportPortRequest) {}
+  // SetOutputFormat
+  rpc SetOutputFormat(AutoOutputFormatMessage) returns (MessageBase) {}
+  // GetOutputFormat
+  rpc GetOutputFormat(MessageBase) returns (AutoOutputFormatMessage) {}
+  // GetUserOutputFormat 自定义字段内容
+  rpc GetUserOutputFormat(AutoUserFormatMessage)
+    returns (AutoUserFormatMessage) {}
+  // SetUserOutputFormat 自定义字段内容
+  rpc SetUserOutputFormat(AutoUserFormatMessage) returns (MessageBase) {}
+  // SetWGOption
+  rpc SetWGOption(SetWGOptionRequest) returns (MessageBase) {}
+  // GetWGOption
+  rpc GetWGOption(MessageBase) returns (GetWGOptionResponse) {}
+  // SetTriggerElectricalLevel
+  rpc SetTriggerCondition(TriggerConditionMessage) returns (MessageBase) {}
+  // GetTriggerElectricalLevel
+  rpc GetTriggerCondition(TriggerConditionMessage)
+    returns (TriggerConditionMessage) {}
+  // SetID
+  rpc SetID(SetIDRequest) returns (MessageBase) {}
+  // GetID
+  rpc GetID(MessageBase) returns (GetIDResponse) {}
+  // SetReaderName
+  rpc SetReaderName(ReaderNameMessage) returns (MessageBase) {}
+  // GetReaderName
+  rpc GetReaderName(MessageBase) returns (ReaderNameMessage) {}
+  // SetReportCondition
+  rpc SetReportCondition(SetReportConditionRequest) returns (MessageBase) {}
+  // GetReportCondition
+  rpc GetReportCondition(MessageBase) returns (GetReportConditionResponse) {}
+  // SetWorkAnt
+  rpc SetWorkAnt(SetWorkAntRequest) returns (MessageBase) {}
+  // GetWorkAnt
+  rpc GetWorkAnt(MessageBase) returns (GetWorkAntResponse) {}
+  // TODO:PrepareUpdate
+  rpc PrepareUpdate(MessageBase) returns (MessageBase) {}
+  // TODO:DownloadPreConfig
+  rpc DownloadPreConfig(MessageBase) returns (MessageBase) {}
+  // TODO:DownloadBin
+  rpc DownloadBin(MessageBase) returns (MessageBase) {}
+  // TODO:GetChipSeq
+  rpc GetChipSeq(MessageBase) returns (MessageBase) {}
+  // UpdateFirmware
+  rpc UpdateFirmware(UpdateFirmwareRequest)
+    returns (stream UpdateFirmwareProgress) {}
+  // TODO:Grant
+  rpc Grant(MessageBase) returns (MessageBase) {}
+  // TODO:
+  rpc GetLicenceInformation(MessageBase) returns (MessageBase) {}
+  // List6C
+  rpc List6C(List6CRequest) returns (stream List6CResponse) {}
+  // Read6C
+  rpc Read6C(Read6CRequest) returns (Read6CResponse) {}
+  // Write6C
+  rpc Write6C(Write6CRequest) returns (MessageBase) {}
+  // Lock6C
+  rpc Lock6C(Lock6CRequest) returns (MessageBase) {}
+  // Kill6C
+  rpc Kill6C(Kill6CRequest) returns (MessageBase) {}
+  // QuickWriteEpc
+  rpc QuickWriteEpc(QuickWriteEpcRequest) returns (MessageBase) {}
+  // List6B
+  rpc List6B(MessageBase) returns (List6BResponse) {}
+  // Read6B
+  rpc Read6B(Read6BRequest) returns (Read6BResponse) {}
+  // Write6B
+  rpc Write6B(Write6BRequest) returns (MessageBase) {}
+  // Lock6B
+  rpc Lock6B(Lock6BRequest) returns (MessageBase) {}
+  // SetHeartbeat
+  rpc SetHeartbeat(SetHeartbeatRequest) returns (MessageBase) {}
+  // GetHeartbeat
+  rpc GetHeartbeat(MessageBase) returns (GetHeartbeatResponse) {}
+  // SetFastTID
+  rpc SetFastTID(SwitchFastTIDMessage) returns (MessageBase) {}
+  // GetFastTID
+  rpc GetFastTID(MessageBase) returns (SwitchFastTIDMessage) {}
+  // StartScan
+  rpc StartScan(MessageBase) returns (stream ScanDeviceResponse) {}
+  // StopScan
+  rpc StopScan(MessageBase) returns (MessageBase) {}
+  // StartAutoModeListenCurrent
+  rpc StartAutoModeListenCurrent(MessageBase)
+    returns (stream AutoModeListenResponse) {}
+  // StartAutoModeListenUDP
+  rpc StartAutoModeListenUDP(AutoModeListenUDPRequest)
+    returns (stream AutoModeListenResponse) {}
+  // StopAutoModelListenUDP
+  rpc StopAutoModelListenUDP(AutoModeListenUDPRequest) returns (MessageBase) {}
+  // StopAutoModeListen
+  rpc StopAutoModeListen(MessageBase) returns (MessageBase) {}
+
+  rpc ResetWifi(MessageBase) returns (MessageBase) {}
+  // GetAntCount
+  rpc GetAntCount(MessageBase) returns (GetAntCountMessage) {}
+  // SetAntCount
+  rpc SetAntCount(GetAntCountMessage) returns (MessageBase) {}
+  // GetRelayNumber
+  rpc GetRelayNumber(MessageBase) returns (GetRelayNumberMessage) {}
+  // SetRelayNumber
+  rpc SetRelayNumber(GetRelayNumberMessage) returns (MessageBase) {}
+  // GetTriggerNumber
+  rpc GetTriggerNumber(MessageBase) returns (GetTriggerNumberMessage) {}
+  // SetTriggerNumber
+  rpc SetTriggerNumber(GetTriggerNumberMessage) returns (MessageBase) {}
+
+  rpc SetWifiAvailable(ModuleAvailableMessage) returns (MessageBase) {}
+  rpc GetWifiAvailable(MessageBase) returns (ModuleAvailableMessage) {}
+
+  rpc SetG4Available(ModuleAvailableMessage) returns (MessageBase) {}
+  rpc GetG4Available(MessageBase) returns (ModuleAvailableMessage) {}
+
+  rpc SetWgAvailable(ModuleAvailableMessage) returns (MessageBase) {}
+  rpc GetWgAvailable(MessageBase) returns (ModuleAvailableMessage) {}
+
+  rpc SetSuperNetAvailable(ModuleAvailableMessage) returns (MessageBase) {}
+  rpc GetSuperNetAvailable(MessageBase) returns (ModuleAvailableMessage) {}
+
+  rpc SetBoardType(BoardTypeMessage) returns (MessageBase) {}
+
+  rpc SetDevConfig(DevConfig) returns (MessageBase) {}
+  rpc GetDevConfig(DevConfig) returns (DevConfig) {}
+
+  // config service
+  rpc SetCommandTimeout(SetCommandTimeoutRequest) returns (MessageBase) {}
+
+  // ibat2000 firmware download
+  rpc IBat2000DownloadFirmware(IBat2000DownloadFirmwareRequest)
+    returns (stream Progress) {}
+
+  // ibat2000 flash firmware download
+  rpc IBat2000FlashFirmwareDownload(IBat2000FlashFirmwareDownloadRequest)
+    returns (stream Progress) {}
+
+  // r2000 extended command for ibat2000
+
+  // r2000 ext set fwd power offset
+  rpc R2000ExtSetFwdPowerOffset(FwdPowerOffsetMessage) returns (MessageBase) {}
+
+  // r2000 ext get fwd power offset
+  rpc R2000ExtGetFwdPowerOffset(MessageBase) returns (FwdPowerOffsetMessage) {}
+
+  // r2000 ext tx dc offset
+  rpc R2000ExtTxDCOffset(MessageBase) returns (TxDCOffsetMessage) {}
+
+  // r2000 ext cw ctrl
+  rpc R2000ExtCWCtrl(CWCtrlMessage) returns (MessageBase) {}
+
+  // r2000 ext get rev power voltage
+  rpc R2000ExtGetRevPowerVoltage(MessageBase) returns (RevPowerVoltageMessage) {
+  }
+
+  // r2000 ext set rev power voltage
+  rpc R2000ExtSetRevPowerVoltage(RevPowerVoltageMessage) returns (MessageBase) {
+  }
+
+  // r2000 ext set rev formula
+  rpc R2000ExtSetRevFormula(RevFormulaMessage) returns (MessageBase) {}
+
+  // r2000 ext get rev formula
+  rpc R2000ExtGetRevFormula(MessageBase) returns (RevFormulaMessage) {}
+
+  rpc R2000SetXPowerParam(XPowerParamMessage) returns (MessageBase) {}
+
+  rpc R2000GetXPowerParam(GetXPowerParamMessage) returns (XPowerParamMessage) {}
+
+  rpc R2000SetPowerMode(PowerModeMessage) returns (MessageBase) {}
+
+  //
+
+  rpc VisaConnect(VisaConnectMessage) returns (VisaSessionMessage) {}
+
+  rpc VisaDisconnect(VisaSessionMessage) returns (MessageBase) {}
+
+  rpc VisaSetFreFreqRang(MessageVisaFreqRange) returns (MessageBase) {}
+
+  rpc VisaSetRLevel(MessageVisaRLevel) returns (MessageBase) {}
+
+  rpc VisaGetPeakPower(MessageVisaPeakPower) returns (MessageVisaPeakPower) {}
+
+  rpc VisaRun(MessageVisaRun) returns (MessageVisaRun) {}
+
+  rpc SetLogLevel(MessageLogLevel) returns (MessageBase) {}
+
+  rpc DisconnectAll(MessageBase) returns (MessageBase) {}
+
+  // 获取设备型号码
+  rpc SetDevTypeInfo(DevTypeInfo) returns (MessageBase) {}
+
+  // 获取设备型号码
+  rpc GetDevTypeInfo(MessageBase) returns (DevTypeInfo) {}
+
+  rpc GetAllDevMetas(Empty) returns (AllDevMetas) {}
+
+  rpc GetMetaByDi(MessageBase) returns (GetMetaByDiMessage) {}
+
+  rpc SetReportOption(ReportOptionMessage) returns (MessageBase) {}
+
+  rpc GetReportOption(MessageBase) returns (ReportOptionMessage) {}
+  // TODO: add disconnect callback
+
+  rpc GetHidList(MessageBase) returns (HidListMessage) {}
+
+  rpc IpaReconnect(MessageBase) returns (MessageBase) {}
+
+  rpc PingHost(PingHostRequest) returns (MessageBase) {}
+
+  // m100 api
+  rpc M100ConnectRs(ConnectRSRequest) returns (ConnectResponse) {}
+  rpc M100MutilInventory(MutilInventoryRequest) returns (MessageBase) {}
+}
+
+message MutilInventoryRequest {
+  int32 times = 1;
+  MessageBase base = 2;
+}
+
+message PingHostRequest {
+  string host = 1;
+  // 超时时间，单位ms
+  int64 timeout = 2;
+}
+
+message HidDevice {
+  int64 pid = 1;
+  int64 vid = 2;
+}
+
+message HidListMessage {
+  MessageBase base = 1;
+  repeated HidDevice devices = 2;
+}
+
+message GetMetaByDiMessage {
+  MessageBase base = 1;
+  DevMeta meta = 2;
+}
+
+message ReportOption {
+  bool enable = 1;
+  string ip = 2;
+  int32 port = 3;
+}
+
+message ReportOptionMessage {
+  ReportOption udp = 1;
+  ReportOption tcp = 2;
+
+  MessageBase base = 7;
+}
+
+// 空的请求消息
+message Empty {}
+
+message AllDevMetas {repeated DevMeta metas = 1;}
+
+message DevMeta {
+
+  string model = 1;
+  string name = 2;
+  bool wifiAvailable = 3;
+  bool g4Available = 4;
+  bool superNetAvailable = 5;
+  bool wgAvailable = 6;
+  bool rj45Available = 7;
+  bool rs232Available = 8;
+  bool rs485Available = 9;
+  bool usbAvailable = 10;
+  bool supportFilter = 11;
+  bool supportAlarmFilter = 12;
+  bool supportRelayControl = 13;
+  bool SupportUserOutputFormat = 14;
+  bool SupportAutoMode = 15;
+  bool SupportAccessDoorTriggerMode = 16;
+  bool SupportHeartbeat = 17;
+  bool SupportTcp = 18;
+  bool SupportUdp = 19;
+  bool SupportUdpReport = 20;
+  bool SupportTcpReport = 21;
+  bool SupportReportCondition = 22;
+  bool HasMacAddress = 23;
+  bool IsHF = 24;
+  bool IsDesktopReader = 25;
+  bool SupportSetTime = 26;
+  bool SupportGetTime = 27;
+  bool SupportKeyboardSimulation = 28;
+  bool SupportKeyboardSimulationSetting = 29;
+  bool SupportAutoWorkMode = 30;
+  bool SupportChangeWorkModeProgramming = 31;
+  bool SupportChangeMAC = 32;
+  bool SupportChangeIP = 33;
+  bool SupportAlgorithmSelect = 34;
+  bool SupportTagTypeSelect = 35;
+  bool SupportSetDeviceName = 36;
+  bool SupportReboot = 37;
+  bool SupportReset = 38;
+  bool SupportResetWifi = 39;
+  bool SupportReportTagTypeSelection = 40;
+
+  int32 di = 41;       // 设备类型编号
+  int32 protocol = 42; // 协议类型
+}
+
+// 设备配置项
+message DevConfig {
+  // 配置项
+  int32 config = 1;
+  // 值
+  int32 value = 2;
+
+  MessageBase base = 7;
+}
+
+message VisaSessionMessage {
+  uint32 rm = 1;
+  uint32 instr = 2;
+  MessageBase base = 3;
+}
+
+message VisaConnectMessage {string address = 1;}
+
+message MessageLogLevel {int32 level = 1;}
+
+message MessageVisaRun {
+  MessageBase base = 1;
+  string address = 2;
+  string cmd = 3;
+  bool wait = 4;
+  string response = 5;
+  uint32 instrument = 6;
+}
+
+message MessageVisaPeakPower {
+  MessageBase base = 1;
+  float power = 2;
+  string addr = 6;
+  int32 mark = 3;
+  uint32 instrument = 4;
+}
+
+message MessageVisaFreqRange {
+  MessageBase base = 1;
+  int64 start = 2;
+  int64 stop = 3;
+  string addr = 6;
+  uint32 instrument = 7;
+}
+
+message MessageVisaRLevel {
+  MessageBase base = 1;
+  float rLevel = 2;
+  float rLevelOffset = 3;
+  string addr = 6;
+  uint32 instrument = 7;
+}
+
+message XPowerParamMessage {
+  MessageBase base = 1;
+  int32 power = 2;
+  bool Plus3dBm = 3;
+  bool Minus10dBm = 4;
+  int32 Increase = 5;
+  int32 Decrease = 6;
+}
+
+message GetXPowerParamMessage {
+  MessageBase base = 1;
+  int32 power = 2;
+}
+
+message PowerModeMessage {
+  MessageBase base = 1;
+  bool saveMode = 2;
+}
+
+message RevFormulaMessage {
+  MessageBase base = 1;
+  float b = 2;
+  float k = 3;
+}
+
+message RevPowerVoltageMessage {
+  MessageBase base = 1;
+  float power = 2;
+  float voltage = 3;
+}
+
+message CWCtrlMessage {
+  MessageBase base = 1;
+  bool is_open = 2;
+}
+
+message TxDCOffsetMessage {
+  MessageBase base = 1;
+  int32 dc_q = 2;
+  int32 dc_i = 3;
+}
+
+message FwdPowerOffsetMessage {
+  MessageBase base = 1;
+  float power = 2;
+}
+
+message IBat2000FlashFirmwareDownloadRequest {
+  MessageBase base = 1;
+  int32 firmware_type = 2;
+  string path = 3;
+}
+
+message IBat2000DownloadFirmwareRequest {
+  MessageBase base = 1;
+  string path = 2;
+}
+
+// Progress 进度
+message Progress {
+  float progress = 1;
+  string message = 2;
+  bool is_finished = 3;
+  bool is_success = 4;
+}
+
+message BoardTypeMessage {
+  MessageBase base = 1;
+  int32 type = 2;
+}
+
+message ModuleAvailableMessage {
+  MessageBase base = 1;
+  bool available = 2;
+}
+
+message UpdateFirmwareRequest {
+  MessageBase base = 1;
+  int64 address = 2;
+  string firmware_path = 3;
+}
+
+message UpdateFirmwareProgress {
+  string message = 1;
+  float progress = 2;
+  bool currentStep = 3;
+}
+
+message SetCommandTimeoutRequest {int32 timeout = 1;}
+
+message AutoModeListenResponse {
+  int32 Ant = 1;
+  string FIN = 2;
+  string IP = 3;
+  string EPC = 4;
+  string TID = 5;
+  string USER = 6;
+  string ID = 7;
+  int32 RSSI = 8;
+  int32 TS = 9;
+  int32 TagType = 10;
+  string Custom1 = 11;
+  string Custom2 = 12;
+  string Custom3 = 13;
+  string Custom4 = 14;
+  string Custom5 = 15;
+
+  float Temperature = 16;
+  float Latitude = 17;
+  float Longitude = 18;
+}
+
+message AutoModeListenUDPRequest {
+  string ip = 1;
+  int32 port = 2;
+  MessageBase base = 3;
+}
+
+message AutoModeListenRS232Request {
+  string com = 1;
+  MessageBase base = 2;
+}
+
+message ScanDevice {
+  string ip = 1;
+  int32 port = 2;
+  string mode = 3;
+  string id = 4;
+  int32 rs485Address = 5;
+  int32 rs232Baud = 6;
+  int32 rs485Baud = 7;
+  // 0-uvp 1-p218 2-r2000
+  int32 Ti = 8;
+  int32 Protocol = 9;
+  int32 ProductType = 10;
+}
+
+message ScanDeviceResponse {
+  repeated ScanDevice devices = 1;
+  MessageBase base = 6;
+}
+
+message TriggerConditionMessage {
+  ElectricalLevel level = 1;
+  int32 seq = 2;
+  int32 interval = 3;
+  MessageBase base = 4;
+}
+
+message AutoUserFormatMessage {
+  // 最长24个字节，该路自定义上报字段数据ASCII码。
+  string message = 1;
+  // 上报字段编号。从0开始，最多支持5路上报。
+  int32 seq = 2;
+  MessageBase base = 5;
+}
+
+message AutoOutputFormatMessage {
+  uint32 format = 1;
+  uint32 tidAddr = 2;
+  uint32 tidLen = 3;
+  uint32 userAddr = 4;
+  uint32 userLen = 5;
+  MessageBase base = 6;
+}
+
+message SwitchFastTIDMessage {
+  bool enable = 1;
+  MessageBase base = 4;
+}
+
+message SetHeartbeatRequest {
+  bool enable = 1;
+  int32 interval = 2;
+  string message = 4;
+  MessageBase base = 3;
+}
+
+message GetHeartbeatResponse {
+  bool enable = 1;
+  int32 interval = 2;
+  string message = 4;
+  MessageBase base = 5;
+}
+
+message GetAntCountMessage {
+  int32 count = 1;
+  MessageBase base = 5;
+}
+
+message Lock6BRequest {
+  bytes uid = 1;
+  int32 addr = 2;
+  MessageBase base = 3;
+}
+message Write6BRequest {
+  bytes uid = 1;
+  int32 addr = 2;
+  bytes data = 3;
+  MessageBase base = 4;
+}
+message Read6BResponse {
+  Tag tag = 1;
+  MessageBase base = 5;
+}
+message Read6BRequest {
+  bytes uid = 1;
+  int32 addr = 2;
+  int32 len = 3;
+  MessageBase base = 4;
+}
+
+message List6BResponse {
+  repeated Tag tags = 1;
+  MessageBase base = 5;
+}
+
+message QuickWriteEpcRequest {
+  bytes epc = 1;
+  bytes password = 2;
+  MessageBase base = 4;
+}
+message Kill6CRequest {
+  bytes killPassword = 1;
+  bytes epc = 2;
+  MessageBase base = 4;
+}
+
+enum LockMemory {
+  UserMemoryLock = 0;
+  TIDMemoryLock = 1;
+  EPCMemoryLock = 2;
+  AccessPasswordMemoryLock = 3;
+  KillPasswordMemoryLock = 4;
+}
+enum LockType {
+  OpenLockType = 0;
+  LockLockType = 1;
+  ForeverOpenLockType = 2;
+  ForeverLockLockType = 3;
+}
+
+message Lock6CRequest {
+  LockMemory mem = 1;
+  LockType lockType = 2;
+  bytes password = 3;
+  bytes epc = 4;
+  MessageBase base = 5;
+}
+message Write6CRequest {
+  Memory mem = 1;
+  int32 addr = 2;
+  bytes epc = 3;
+  bytes data = 4;
+  bytes password = 5;
+  MessageBase base = 6;
+}
+
+message Read6CResponse {
+  Tag tag = 1;
+  MessageBase base = 5;
+}
+
+message Read6CRequest {
+  Memory mem = 1;
+  int32 addr = 2;
+  int32 len = 3;
+  bytes epc = 4;
+  bytes password = 5;
+  MessageBase base = 6;
+}
+
+message List6CResponse {
+  Tag tag = 1;
+  MessageBase base = 5;
+}
+
+enum TagType {
+  TagType6C = 0;
+  TagType6B = 1;
+}
+
+// 标签信息
+message Tag {
+  bytes ID = 7;
+  bytes Data = 1; // uuid for 6c
+  Memory Mem = 2;
+  int32 Ant = 3;
+  int32 RSSI = 4;
+  bool End = 5;
+  TagType Type = 6;
+  bytes TID = 8;
+  bytes USER = 9;
+  bytes PASSWORD = 10;
+}
+
+enum Memory {
+  PasswordMemory = 0;
+  EPCMemory = 1;
+  TIDMemory = 2;
+  UserMemory = 3;
+}
+
+message List6CRequest {
+  Memory mem = 1;
+  int32 addr = 2;
+  int32 len = 3;
+  bytes password = 4;
+  MessageBase base = 6;
+}
+
+message GetWorkAntResponse {
+  int32 ant = 1;
+  MessageBase base = 6;
+}
+message SetWorkAntRequest {
+  int32 ant = 1;
+  MessageBase base = 6;
+}
+enum ReportConditionType {
+  // 立即上报：读到标签立即上报
+  ReportNow = 0;
+  // 定时上报（所有标签）
+  ReportInterval1 = 1;
+  // 定时上报（单标签）
+  ReportInterval2 = 2;
+  // Modbus上报：此方式用于modbus协议。
+  ReportModbus = 3;
+  // ReportRealtime 实时上报
+  ReportRealtime = 4;
+}
+
+message ReportCondition {
+  ReportConditionType type = 1;
+  int32 Interval = 2;
+}
+
+message GetReportConditionResponse {
+  ReportCondition condition = 1;
+  MessageBase base = 5;
+}
+message SetReportConditionRequest {
+  ReportCondition condition = 1;
+  MessageBase base = 6;
+}
+
+message ReaderNameMessage {
+  string mode = 1;
+  MessageBase base = 6;
+}
+
+message GetIDResponse {
+  string id = 1;
+  MessageBase base = 5;
+}
+message SetIDRequest {
+  string id = 1;
+  MessageBase base = 6;
+}
+
+enum ElectricalLevel {
+  high = 0;
+  low = 1;
+}
+message GetWGOptionResponse {
+  WGOption option = 1;
+  MessageBase base = 5;
+}
+message SetWGOptionRequest {
+  WGOption option = 1;
+  MessageBase base = 6;
+}
+// 韦根参数
+message WGOption {
+  // 1个字节的脉冲宽度（单位`10us`）
+  int32 Width = 1;
+  // 1个字节的脉冲间隔（单位`10us`）
+  int32 Interval = 2;
+}
+
+message SetReportPortRequest {
+  Port port = 1;
+  bool enable = 2;
+  MessageBase base = 6;
+}
+
+message GetMacResponse {
+  string mac = 1;
+  MessageBase base = 5;
+}
+
+message SetMacRequest {
+  string mac = 1;
+  MessageBase base = 6;
+}
+message GetNetworkParamResponse {
+  NetworkParam param = 1;
+  MessageBase base = 5;
+}
+message SetNetworkParamRequest {
+  NetworkParam param = 1;
+  MessageBase base = 6;
+}
+message NetworkParam {
+  string IP = 1;
+  string Mask = 2;
+  string Gateway = 3;
+  int32 Port = 4;
+}
+
+message GetTagTypeResponse {
+  bool tag6b = 1;
+  bool tag6c = 2;
+  bool temperature = 3;
+  MessageBase base = 5;
+}
+message SetTagTypeRequest {
+  bool tag6b = 1;
+  bool tag6c = 2;
+  bool temperature = 3;
+  MessageBase base = 6;
+}
+
+message GetFilterResponse {
+  Filter filter = 1;
+  MessageBase base = 5;
+}
+
+enum FilterType {
+  OutputMatchFilter = 0;
+  TriggerRelayFilter = 1;
+}
+
+// 标签过滤器
+message Filter {
+  // 1 个字节，表示过滤器的用途。0 - 仅输出匹配的标签；1 -
+  // 输出所有标签，当识别到匹配的标签时，如果开启了自动控制继电器功能，则会触发继电器工作。
+  bool Enable = 1;
+  // 1 个字节掩码长度
+  int32 Len = 2;
+  // 1 个字节掩码地址
+  int32 Addr = 3;
+  // LEN个字节的掩码数据
+  bytes Data = 4;
+}
+
+message SetFilterRequest {
+  Filter filter = 1;
+  MessageBase base = 6;
+}
+
+message SetTagAlarmRequest {
+  Filter filter = 1;
+  MessageBase base = 6;
+}
+
+message GetTagAlarmResponse {
+  Filter filter = 1;
+  MessageBase base = 5;
+}
+
+message GetLessTagAlgorithmResponse {
+  bool enableLess = 1;
+  bool enableFastTID = 2;
+  bool enableFastAntSwitch = 3;
+  MessageBase base = 5;
+}
+message SetLessTagAlgorithmRequest {
+  bool enableLess = 1;
+  bool enableFastTID = 2;
+  bool enableFastAntSwitch = 3;
+  MessageBase base = 6;
+}
+
+message TimeMessage {
+  int64 time = 1;
+  int32 year = 2;
+  int32 month = 3;
+  int32 day = 4;
+  int32 hour = 6;
+  int32 minute = 7;
+  int32 second = 8;
+  MessageBase base = 5;
+}
+
+message GetInventoryAntsResponse {
+  bytes ants = 1;
+  MessageBase base = 5;
+}
+message SetInventoryAntsRequest {
+  bytes ants = 1;
+  MessageBase base = 6;
+}
+message GetUserFreqResponse {
+  FrequencyOption option = 1;
+  MessageBase base = 5;
+}
+
+message SetUserFreqRequest {
+  FrequencyOption option = 1;
+  MessageBase base = 6;
+}
+
+message FrequencyOption {
+  // 频段 region
+  FreqRegion Region = 1;
+  // 频点间隔 FreqSpace，频点间隔 = FreqSpace * 10KHz。
+  int32 FreqSpace = 2;
+  // 频点数量 FreqQuantity
+  int32 FreqCount = 3;
+  // 起始频率 StartFreq 单位为 KHz，16 进制数高位在前
+  int32 StartFreq = 4;
+  // 是否是频段区域内全频点
+  bool IsTotalFreqPoints = 5;
+  // 起始频点。FCC范围0-52，ETSI范围0-6，CHN范围0-10
+  int32 StartFreqSeq = 6;
+  // 结束频点。FCC范围0-52，ETSI范围0-6，CHN范围0-10。
+  int32 EndFreqSeq = 7;
+
+  // FreqSettingFreqInRegion 1 FreqSettingUserFreq 2 FreqSettingAutoFreqInRegion
+  // 3
+  int32 SettingType = 8;
+}
+
+enum FreqRegion {
+  RegionUSA = 0;
+  RegionEU = 1;
+  RegionCN = 2;
+  RegionUSER = 3;
+}
+
+message GetPowerRequest {
+  int32 ant = 1;
+  MessageBase base = 6;
+}
+
+message GetPowerResponse {
+  int32 power = 1;
+  MessageBase base = 5;
+}
+
+message SetPowerRequest {
+  int32 ant = 1;
+  int32 power = 2;
+  MessageBase base = 3;
+}
+
+enum TransportProtoType {
+  TCP = 0;
+  UDP = 1;
+}
+
+enum Port {
+  RS232 = 0;
+  RS485 = 1;
+  RJ45 = 2;
+  WG26 = 3;
+  WG34 = 4;
+  WIFI = 5;
+  GSM4G = 6;
+}
+
+enum RelayStatus {
+  Open = 0;
+  Close = 1;
+}
+
+message ConnectRSRequest {
+  string port = 1;
+  int32 baud = 2;
+  // only for 485
+  int32 address = 3;
+  MessageBase base = 4;
+  int32 timeout = 5;
+}
+
+message ConnectRSRequestWithDeviceConfig {
+  ConnectRSRequest request = 1;
+  DeviceConfig config = 2;
+}
+
+message DeviceConfig {
+  string name = 1;
+  int32 wifi_available = 2;
+  int32 g4_available = 3;
+  int32 wg_available = 4;
+  int32 supernet_available = 5;
+  int32 ant_count = 6;
+  int32 trigger_count = 7;
+  int32 relay_count = 8;
+  int32 di = 9;     // device type
+  int32 proto = 10; // 0-uvp 1-p218 2-r2000
+}
+
+message ConnectNetRequest {
+  string ip = 1;
+  int32 port = 2;
+  TransportProtoType proto = 3;
+  MessageBase base = 4;
+  int32 timeout = 5;
+}
+
+message ConnectResponse {
+  int32 id = 1;
+  MessageBase base = 5;
+}
+
+message GetBaudRequest {
+  Port port = 1;
+  MessageBase base = 6;
+}
+
+message GetBaudResponse {
+  int32 baud = 1;
+  MessageBase base = 5;
+}
+
+message SetBaudRequest {
+  Port port = 1;
+  int32 baud = 2;
+  MessageBase base = 6;
+}
+
+message SetRs485AddressRequest {
+  int32 address = 1;
+  MessageBase base = 6;
+}
+
+message GetRs485AddressResponse {
+  int32 address = 1;
+  MessageBase base = 5;
+}
+
+message GetVersionResponse {
+  string version = 1;
+  MessageBase base = 5;
+}
+
+message SetRelayRequest {
+  int32 relay = 1;
+  RelayStatus status = 2;
+  MessageBase base = 6;
+}
+
+message GetRelayNumberMessage {
+  int32 number = 1;
+  MessageBase base = 5;
+}
+
+message GetTriggerNumberMessage {
+  int32 number = 1;
+  MessageBase base = 5;
+}
+
+message GetRelayRequest {
+  int32 relay = 1;
+  MessageBase base = 6;
+}
+
+message GetRelayResponse {
+  RelayStatus status = 1;
+  MessageBase base = 5;
+}
+
+message SetRelayOption {
+  // 0不自动控制继电器, 1当读到标签时，吸合继电器,
+  // 2当读到满足报警条件的标签时，吸合继电器
+  int32 type = 1;
+  // 闭合超时时间，单位：秒
+  int32 timeout = 2;
+}
+
+message SetRelayOptionRequest {
+  SetRelayOption option = 1;
+  int32 relay = 2;
+  MessageBase base = 6;
+}
+
+message GetRelayOptionRequest {
+  int32 relay = 1;
+  MessageBase base = 5;
+}
+
+message GetRelayOptionResponse {
+  SetRelayOption option = 1;
+  MessageBase base = 5;
+}
+message SetBuzzRequest {
+  bool enable = 1;
+  MessageBase base = 6;
+}
+
+message GetBuzzResponse {
+  bool enable = 1;
+  MessageBase base = 5;
+}
+
+enum WorkMode {
+  // command mode
+  CommandMode = 0;
+  // Continuous read tag
+  AutoMode = 1;
+  // Read for a period when condition matched
+  TriggerMode = 2;
+  // double direction trigger reading tag
+  AccessDoorTriggerMode = 3;
+}
+
+message GetWorkModeResponse {
+  WorkMode mode = 1;
+  MessageBase base = 5;
+}
+
+message SetWorkModeRequest {
+  WorkMode mode = 1;
+  MessageBase base = 6;
+}
+
+message DevTypeInfo {
+  int32 di = 1;
+
+  MessageBase base = 2;
+}
+
+message MessageBase {
+  int32 clientID = 1;
+  bool success = 2;
+  string err_message = 3;
+
+  // Device ID
+  int32 di = 4;
+}
+
+// TODO:  错误码处理
