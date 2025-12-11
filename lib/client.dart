@@ -36,6 +36,8 @@ class VupClient {
   }
 
   Future<void> connect(String com, int baud) async {
+    _stub.setLogLevel(pb.MessageLogLevel(level: 6));
+
     final response = await _stub.m100ConnectRs(
       pb.ConnectRSRequest(port: com, baud: baud, base: pb.MessageBase(clientID: 0)),
     );
