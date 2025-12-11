@@ -87,7 +87,7 @@ class VupClient {
 
   /// 停止自动盘存
   Future<void> stopAuto() async {
-    final response = await _stub.stopAuto(pb.MessageBase(clientID: _id!));
+    final response = await _stub.m100StopMultiInventory(pb.MessageBase(clientID: _id!));
     if (!response.success) {
       throw Exception(response.errMessage);
     }

@@ -1126,6 +1126,14 @@ class VupServiceClient extends $grpc.Client {
     return $createUnaryCall(_$m100MutilInventory, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.MessageBase> m100StopMultiInventory(
+    $0.MessageBase request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$m100StopMultiInventory, request,
+        options: options);
+  }
+
   // method descriptors
 
   static final _$ping = $grpc.ClientMethod<$0.MessageBase, $0.MessageBase>(
@@ -1804,6 +1812,11 @@ class VupServiceClient extends $grpc.Client {
       $grpc.ClientMethod<$0.MutilInventoryRequest, $0.MessageBase>(
           '/VupService/M100MutilInventory',
           ($0.MutilInventoryRequest value) => value.writeToBuffer(),
+          $0.MessageBase.fromBuffer);
+  static final _$m100StopMultiInventory =
+      $grpc.ClientMethod<$0.MessageBase, $0.MessageBase>(
+          '/VupService/M100StopMultiInventory',
+          ($0.MessageBase value) => value.writeToBuffer(),
           $0.MessageBase.fromBuffer);
 }
 
@@ -2845,6 +2858,13 @@ abstract class VupServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) =>
             $0.MutilInventoryRequest.fromBuffer(value),
+        ($0.MessageBase value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.MessageBase, $0.MessageBase>(
+        'M100StopMultiInventory',
+        m100StopMultiInventory_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.MessageBase.fromBuffer(value),
         ($0.MessageBase value) => value.writeToBuffer()));
   }
 
@@ -3975,4 +3995,12 @@ abstract class VupServiceBase extends $grpc.Service {
 
   $async.Future<$0.MessageBase> m100MutilInventory(
       $grpc.ServiceCall call, $0.MutilInventoryRequest request);
+
+  $async.Future<$0.MessageBase> m100StopMultiInventory_Pre(
+      $grpc.ServiceCall $call, $async.Future<$0.MessageBase> $request) async {
+    return m100StopMultiInventory($call, await $request);
+  }
+
+  $async.Future<$0.MessageBase> m100StopMultiInventory(
+      $grpc.ServiceCall call, $0.MessageBase request);
 }

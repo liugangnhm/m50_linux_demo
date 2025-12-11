@@ -170,6 +170,7 @@ Future<void> disconnectDevice(WidgetRef ref) async {
   // 停止自动模式监听
   try {
     await client.stopAutoModeListen();
+    await client.stopAuto();
   } catch (_) {}
 
   await _autoModeSubscription?.cancel();

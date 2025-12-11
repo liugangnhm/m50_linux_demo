@@ -13,7 +13,7 @@ service VupService {
   rpc ConnectRs(ConnectRSRequest) returns (ConnectResponse) {}
 
   rpc ConnectR2000Rs(ConnectRSRequestWithDeviceConfig)
-    returns (ConnectResponse) {}
+      returns (ConnectResponse) {}
 
   // ConnectRsIBat2000 connect rs232/485
   rpc ConnectRsIBat2000(ConnectRSRequest) returns (ConnectResponse) {}
@@ -102,7 +102,7 @@ service VupService {
   rpc GetOutputFormat(MessageBase) returns (AutoOutputFormatMessage) {}
   // GetUserOutputFormat 自定义字段内容
   rpc GetUserOutputFormat(AutoUserFormatMessage)
-    returns (AutoUserFormatMessage) {}
+      returns (AutoUserFormatMessage) {}
   // SetUserOutputFormat 自定义字段内容
   rpc SetUserOutputFormat(AutoUserFormatMessage) returns (MessageBase) {}
   // SetWGOption
@@ -113,7 +113,7 @@ service VupService {
   rpc SetTriggerCondition(TriggerConditionMessage) returns (MessageBase) {}
   // GetTriggerElectricalLevel
   rpc GetTriggerCondition(TriggerConditionMessage)
-    returns (TriggerConditionMessage) {}
+      returns (TriggerConditionMessage) {}
   // SetID
   rpc SetID(SetIDRequest) returns (MessageBase) {}
   // GetID
@@ -140,7 +140,7 @@ service VupService {
   rpc GetChipSeq(MessageBase) returns (MessageBase) {}
   // UpdateFirmware
   rpc UpdateFirmware(UpdateFirmwareRequest)
-    returns (stream UpdateFirmwareProgress) {}
+      returns (stream UpdateFirmwareProgress) {}
   // TODO:Grant
   rpc Grant(MessageBase) returns (MessageBase) {}
   // TODO:
@@ -179,10 +179,10 @@ service VupService {
   rpc StopScan(MessageBase) returns (MessageBase) {}
   // StartAutoModeListenCurrent
   rpc StartAutoModeListenCurrent(MessageBase)
-    returns (stream AutoModeListenResponse) {}
+      returns (stream AutoModeListenResponse) {}
   // StartAutoModeListenUDP
   rpc StartAutoModeListenUDP(AutoModeListenUDPRequest)
-    returns (stream AutoModeListenResponse) {}
+      returns (stream AutoModeListenResponse) {}
   // StopAutoModelListenUDP
   rpc StopAutoModelListenUDP(AutoModeListenUDPRequest) returns (MessageBase) {}
   // StopAutoModeListen
@@ -224,11 +224,11 @@ service VupService {
 
   // ibat2000 firmware download
   rpc IBat2000DownloadFirmware(IBat2000DownloadFirmwareRequest)
-    returns (stream Progress) {}
+      returns (stream Progress) {}
 
   // ibat2000 flash firmware download
   rpc IBat2000FlashFirmwareDownload(IBat2000FlashFirmwareDownloadRequest)
-    returns (stream Progress) {}
+      returns (stream Progress) {}
 
   // r2000 extended command for ibat2000
 
@@ -306,6 +306,7 @@ service VupService {
   // m100 api
   rpc M100ConnectRs(ConnectRSRequest) returns (ConnectResponse) {}
   rpc M100MutilInventory(MutilInventoryRequest) returns (MessageBase) {}
+  rpc M100StopMultiInventory(MessageBase) returns (MessageBase) {}
 }
 
 message MutilInventoryRequest {
@@ -350,7 +351,7 @@ message ReportOptionMessage {
 // 空的请求消息
 message Empty {}
 
-message AllDevMetas {repeated DevMeta metas = 1;}
+message AllDevMetas { repeated DevMeta metas = 1; }
 
 message DevMeta {
 
@@ -395,8 +396,8 @@ message DevMeta {
   bool SupportResetWifi = 39;
   bool SupportReportTagTypeSelection = 40;
 
-  int32 di = 41;       // 设备类型编号
-  int32 protocol = 42; // 协议类型
+  int32 di = 41;// 设备类型编号
+  int32 protocol = 42;// 协议类型
 }
 
 // 设备配置项
@@ -415,9 +416,9 @@ message VisaSessionMessage {
   MessageBase base = 3;
 }
 
-message VisaConnectMessage {string address = 1;}
+message VisaConnectMessage { string address = 1; }
 
-message MessageLogLevel {int32 level = 1;}
+message MessageLogLevel { int32 level = 1; }
 
 message MessageVisaRun {
   MessageBase base = 1;
@@ -540,7 +541,7 @@ message UpdateFirmwareProgress {
   bool currentStep = 3;
 }
 
-message SetCommandTimeoutRequest {int32 timeout = 1;}
+message SetCommandTimeoutRequest { int32 timeout = 1; }
 
 message AutoModeListenResponse {
   int32 Ant = 1;
@@ -737,7 +738,7 @@ enum TagType {
 // 标签信息
 message Tag {
   bytes ID = 7;
-  bytes Data = 1; // uuid for 6c
+  bytes Data = 1;// uuid for 6c
   Memory Mem = 2;
   int32 Ant = 3;
   int32 RSSI = 4;
@@ -1042,8 +1043,8 @@ message DeviceConfig {
   int32 ant_count = 6;
   int32 trigger_count = 7;
   int32 relay_count = 8;
-  int32 di = 9;     // device type
-  int32 proto = 10; // 0-uvp 1-p218 2-r2000
+  int32 di = 9;// device type
+  int32 proto = 10;// 0-uvp 1-p218 2-r2000
 }
 
 message ConnectNetRequest {
