@@ -32,6 +32,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     final connectionError = ref.watch(connectionErrorProvider);
     final inventoryState = ref.watch(inventoryStateProvider);
     final epcList = ref.watch(epcListProvider);
+    final power = ref.watch(powerProvider);
+    final powerSettingState = ref.watch(powerSettingStateProvider);
+    final powerError = ref.watch(powerErrorProvider);
 
     // 初始化串口路径
     if (_portController.text.isEmpty && serialPort.isNotEmpty) {
@@ -42,6 +45,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final isConnecting = connectionState == DeviceConnectionState.connecting;
     final isInventoryRunning = inventoryState == InventoryState.running;
     final isInventoryStopping = inventoryState == InventoryState.stopping;
+    final isPowerSetting = powerSettingState == PowerSettingState.setting;
 
     return Scaffold(
       appBar: AppBar(title: const Text('M50 Demo'), backgroundColor: Theme.of(context).colorScheme.inversePrimary),
@@ -76,7 +80,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         SizedBox(
                           width: 100,
                           child: ElevatedButton(
-                            onPressed: isConnecting
+                            onPressed: isConnecting || isInventoryRunning
                                 ? null
                                 : () async {
                                     if (isConnected) {
@@ -102,7 +106,85 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ],
                     if (isConnected) ...[
                       const SizedBox(height: 8),
-                      const Text('已连接', style: TextStyle(color: Colors.green)),
+                      Row(
+                        children: [
+                          const Text('已连接', style: TextStyle(color: Colors.green)),
+                          if (isInventoryRunning) ...[
+                            const SizedBox(width: 8),
+                            Text('(盘点中，无法断开)', style: TextStyle(color: Colors.orange[700], fontSize: 12)),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // 功率设置区域
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('功率设置', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text('$power dBm'),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        const Text('0'),
+                        Expanded(
+                          child: Slider(
+                            value: power.toDouble(),
+                            min: 0,
+                            max: 33,
+                            divisions: 33,
+                            label: '$power dBm',
+                            onChanged: (!isConnected || isInventoryRunning || isPowerSetting)
+                                ? null
+                                : (value) {
+                                    ref.read(powerProvider.notifier).set(value.round());
+                                  },
+                            onChangeEnd: (!isConnected || isInventoryRunning || isPowerSetting)
+                                ? null
+                                : (value) async {
+                                    await setPower(ref, value.round());
+                                  },
+                          ),
+                        ),
+                        const Text('33'),
+                      ],
+                    ),
+                    if (powerSettingState == PowerSettingState.setting) ...[
+                      const SizedBox(height: 8),
+                      const Row(
+                        children: [
+                          SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
+                          SizedBox(width: 8),
+                          Text('正在设置功率...'),
+                        ],
+                      ),
+                    ],
+                    if (powerSettingState == PowerSettingState.success) ...[
+                      const SizedBox(height: 8),
+                      const Text('功率设置成功', style: TextStyle(color: Colors.green)),
+                    ],
+                    if (powerSettingState == PowerSettingState.error && powerError != null) ...[
+                      const SizedBox(height: 8),
+                      Text('功率设置失败: $powerError', style: const TextStyle(color: Colors.red)),
+                    ],
+                    if (!isConnected) ...[
+                      const SizedBox(height: 8),
+                      Text('请先连接设备', style: TextStyle(color: Colors.grey[600])),
+                    ] else if (isInventoryRunning) ...[
+                      const SizedBox(height: 8),
+                      Text('盘点中，无法调整功率', style: TextStyle(color: Colors.orange[700])),
                     ],
                   ],
                 ),

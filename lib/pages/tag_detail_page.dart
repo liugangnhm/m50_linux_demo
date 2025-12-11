@@ -13,7 +13,7 @@ class TagDetailPage extends ConsumerStatefulWidget {
 }
 
 class _TagDetailPageState extends ConsumerState<TagDetailPage> {
-  pb.Memory _selectedMemory = pb.Memory.UserMemory;
+  pb.Memory _selectedMemory = pb.Memory.EPCMemory;
   final _addrController = TextEditingController(text: '0');
   final _lenController = TextEditingController(text: '4');
   final _writeDataController = TextEditingController();
@@ -172,7 +172,7 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
                         Expanded(
                           child: TextField(
                             controller: _addrController,
-                            decoration: const InputDecoration(labelText: '起始地址(字)', border: OutlineInputBorder()),
+                            decoration: const InputDecoration(labelText: '起始地址(字节)', border: OutlineInputBorder()),
                             keyboardType: TextInputType.number,
                           ),
                         ),
@@ -180,7 +180,7 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
                         Expanded(
                           child: TextField(
                             controller: _lenController,
-                            decoration: const InputDecoration(labelText: '长度(字)', border: OutlineInputBorder()),
+                            decoration: const InputDecoration(labelText: '长度(字节)', border: OutlineInputBorder()),
                             keyboardType: TextInputType.number,
                           ),
                         ),

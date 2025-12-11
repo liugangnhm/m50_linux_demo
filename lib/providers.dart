@@ -90,6 +90,50 @@ class InventoryStateNotifier extends Notifier<InventoryState> {
   }
 }
 
+/// 功率 provider (默认值 30 dBm，范围一般为 0-33 dBm)
+final powerProvider = NotifierProvider<PowerNotifier, int>(PowerNotifier.new);
+
+class PowerNotifier extends Notifier<int> {
+  @override
+  int build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    return prefs.getInt('power') ?? 30;
+  }
+
+  void set(int value) {
+    state = value;
+  }
+}
+
+/// 功率设置状态
+enum PowerSettingState { idle, setting, success, error }
+
+/// 功率设置状态 provider
+final powerSettingStateProvider = NotifierProvider<PowerSettingStateNotifier, PowerSettingState>(
+  PowerSettingStateNotifier.new,
+);
+
+class PowerSettingStateNotifier extends Notifier<PowerSettingState> {
+  @override
+  PowerSettingState build() => PowerSettingState.idle;
+
+  void set(PowerSettingState value) {
+    state = value;
+  }
+}
+
+/// 功率设置错误信息 provider
+final powerErrorProvider = NotifierProvider<PowerErrorNotifier, String?>(PowerErrorNotifier.new);
+
+class PowerErrorNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void set(String? value) {
+    state = value;
+  }
+}
+
 /// EPC 列表 provider
 final epcListProvider = NotifierProvider<EpcListNotifier, List<EpcTag>>(EpcListNotifier.new);
 
@@ -220,4 +264,32 @@ Future<void> stopInventory(WidgetRef ref) async {
   _isInventoryRunning = false;
 
   ref.read(inventoryStateProvider.notifier).set(InventoryState.idle);
+}
+
+/// 设置功率
+Future<void> setPower(WidgetRef ref, int power) async {
+  final client = ref.read(vupClientProvider);
+  final prefs = ref.read(sharedPreferencesProvider);
+
+  ref.read(powerSettingStateProvider.notifier).set(PowerSettingState.setting);
+  ref.read(powerErrorProvider.notifier).set(null);
+
+  try {
+    // 设置天线1的功率（ant=1）
+    await client.setPower(ant: 1, power: power);
+
+    // 持久化保存功率值
+    await prefs.setInt('power', power);
+    ref.read(powerProvider.notifier).set(power);
+
+    ref.read(powerSettingStateProvider.notifier).set(PowerSettingState.success);
+
+    // 2秒后重置状态
+    Future.delayed(const Duration(seconds: 2), () {
+      ref.read(powerSettingStateProvider.notifier).set(PowerSettingState.idle);
+    });
+  } catch (e) {
+    ref.read(powerSettingStateProvider.notifier).set(PowerSettingState.error);
+    ref.read(powerErrorProvider.notifier).set(e.toString());
+  }
 }

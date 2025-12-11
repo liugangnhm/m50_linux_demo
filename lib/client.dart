@@ -95,6 +95,34 @@ class VupClient {
     }
   }
 
+  /// 设置功率
+  Future<void> setPower({required int ant, required int power}) async {
+    final response = await _stub.setPower(
+      pb.SetPowerRequest(
+        ant: ant,
+        power: power,
+        base: pb.MessageBase(clientID: _id!),
+      ),
+    );
+    if (!response.success) {
+      throw Exception(response.errMessage);
+    }
+  }
+
+  /// 获取功率
+  Future<int> getPower({required int ant}) async {
+    final response = await _stub.getPower(
+      pb.GetPowerRequest(
+        ant: ant,
+        base: pb.MessageBase(clientID: _id!),
+      ),
+    );
+    if (!response.base.success) {
+      throw Exception(response.base.errMessage);
+    }
+    return response.power;
+  }
+
   /// 读取标签数据
   Future<pb.Read6CResponse> read6C({
     required pb.Memory mem,
