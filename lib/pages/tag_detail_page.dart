@@ -86,7 +86,7 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
   Future<void> _writeTag() async {
     if (_writeDataController.text.isEmpty) {
       setState(() {
-        _errorMessage = '请输入要写入的数据';
+        _errorMessage = 'Please enter data to write';
       });
       return;
     }
@@ -108,7 +108,7 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(const SnackBar(content: Text('写入成功'), backgroundColor: Colors.green));
+        ).showSnackBar(const SnackBar(content: Text('Write successful'), backgroundColor: Colors.green));
       }
     } catch (e) {
       setState(() {
@@ -124,13 +124,13 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('标签读写'), backgroundColor: Theme.of(context).colorScheme.inversePrimary),
+      appBar: AppBar(title: const Text('Tag Read/Write'), backgroundColor: Theme.of(context).colorScheme.inversePrimary),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // EPC 显示
+            // EPC display
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -145,24 +145,24 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
               ),
             ),
             const SizedBox(height: 16),
-            // 参数设置
+            // Parameter settings
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('参数设置', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const Text('Parameter Settings', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
-                    // 存储区选择
+                    // Memory area selection
                     DropdownButtonFormField<pb.Memory>(
                       initialValue: _selectedMemory,
-                      decoration: const InputDecoration(labelText: '存储区', border: OutlineInputBorder()),
+                      decoration: const InputDecoration(labelText: 'Memory Area', border: OutlineInputBorder()),
                       items: const [
-                        DropdownMenuItem(value: pb.Memory.PasswordMemory, child: Text('密码区')),
-                        DropdownMenuItem(value: pb.Memory.EPCMemory, child: Text('EPC区')),
-                        DropdownMenuItem(value: pb.Memory.TIDMemory, child: Text('TID区')),
-                        DropdownMenuItem(value: pb.Memory.UserMemory, child: Text('用户区')),
+                        DropdownMenuItem(value: pb.Memory.PasswordMemory, child: Text('Password Area')),
+                        DropdownMenuItem(value: pb.Memory.EPCMemory, child: Text('EPC Area')),
+                        DropdownMenuItem(value: pb.Memory.TIDMemory, child: Text('TID Area')),
+                        DropdownMenuItem(value: pb.Memory.UserMemory, child: Text('User Area')),
                       ],
                       onChanged: (value) => setState(() => _selectedMemory = value!),
                     ),
@@ -172,7 +172,7 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
                         Expanded(
                           child: TextField(
                             controller: _addrController,
-                            decoration: const InputDecoration(labelText: '起始地址(字节)', border: OutlineInputBorder()),
+                            decoration: const InputDecoration(labelText: 'Start Address (bytes)', border: OutlineInputBorder()),
                             keyboardType: TextInputType.number,
                           ),
                         ),
@@ -180,7 +180,7 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
                         Expanded(
                           child: TextField(
                             controller: _lenController,
-                            decoration: const InputDecoration(labelText: '长度(字节)', border: OutlineInputBorder()),
+                            decoration: const InputDecoration(labelText: 'Length (bytes)', border: OutlineInputBorder()),
                             keyboardType: TextInputType.number,
                           ),
                         ),
@@ -189,28 +189,28 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
                     const SizedBox(height: 12),
                     TextField(
                       controller: _passwordController,
-                      decoration: const InputDecoration(labelText: '访问密码(8位HEX)', border: OutlineInputBorder()),
+                      decoration: const InputDecoration(labelText: 'Access Password (8-digit HEX)', border: OutlineInputBorder()),
                     ),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            // 读取区域
+            // Read area
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('读取数据', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const Text('Read Data', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
                     ElevatedButton.icon(
                       onPressed: _isLoading ? null : _readTag,
                       icon: _isLoading
                           ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
                           : const Icon(Icons.download),
-                      label: const Text('读取'),
+                      label: const Text('Read'),
                     ),
                     if (_readData != null) ...[
                       const SizedBox(height: 12),
@@ -226,20 +226,20 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
               ),
             ),
             const SizedBox(height: 16),
-            // 写入区域
+            // Write area
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('写入数据', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const Text('Write Data', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
                     TextField(
                       controller: _writeDataController,
                       decoration: const InputDecoration(
-                        labelText: '数据(HEX)',
-                        hintText: '例如: 01 02 03 04',
+                        labelText: 'Data (HEX)',
+                        hintText: 'e.g.: 01 02 03 04',
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -249,13 +249,13 @@ class _TagDetailPageState extends ConsumerState<TagDetailPage> {
                       icon: _isLoading
                           ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
                           : const Icon(Icons.upload),
-                      label: const Text('写入'),
+                      label: const Text('Write'),
                     ),
                   ],
                 ),
               ),
             ),
-            // 错误信息
+            // Error message
             if (_errorMessage != null) ...[
               const SizedBox(height: 16),
               Card(

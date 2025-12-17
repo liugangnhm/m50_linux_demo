@@ -61,7 +61,7 @@ class VupClient {
     return response.version;
   }
 
-  /// M100 多次盘存
+  /// M100 multiple inventory
   Future<void> m100MutilInventory({int times = 1}) async {
     final response = await _stub.m100MutilInventory(
       pb.MutilInventoryRequest(
@@ -74,12 +74,12 @@ class VupClient {
     }
   }
 
-  /// 开始自动模式监听，返回标签数据流
+  /// Start auto mode listening, returns tag data stream
   Stream<pb.AutoModeListenResponse> startAutoModeListenCurrent() {
     return _stub.startAutoModeListenCurrent(pb.MessageBase(clientID: _id!));
   }
 
-  /// 停止自动模式监听
+  /// Stop auto mode listening
   Future<void> stopAutoModeListen() async {
     final response = await _stub.stopAutoModeListen(pb.MessageBase(clientID: _id!));
     if (!response.success) {
@@ -87,7 +87,7 @@ class VupClient {
     }
   }
 
-  /// 停止自动盘存
+  /// Stop auto inventory
   Future<void> stopAuto() async {
     final response = await _stub.m100StopMultiInventory(pb.MessageBase(clientID: _id!));
     if (!response.success) {
@@ -95,7 +95,7 @@ class VupClient {
     }
   }
 
-  /// 设置功率
+  /// Set power
   Future<void> setPower({required int ant, required int power}) async {
     final response = await _stub.setPower(
       pb.SetPowerRequest(
@@ -109,7 +109,7 @@ class VupClient {
     }
   }
 
-  /// 获取功率
+  /// Get power
   Future<int> getPower({required int ant}) async {
     final response = await _stub.getPower(
       pb.GetPowerRequest(
@@ -123,7 +123,7 @@ class VupClient {
     return response.power;
   }
 
-  /// 读取标签数据
+  /// Read tag data
   Future<pb.Read6CResponse> read6C({
     required pb.Memory mem,
     required int addr,
@@ -149,7 +149,7 @@ class VupClient {
     return response;
   }
 
-  /// 写入标签数据
+  /// Write tag data
   Future<void> write6C({
     required pb.Memory mem,
     required int addr,

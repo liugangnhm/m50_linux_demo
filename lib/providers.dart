@@ -8,10 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// SharedPreferences provider
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError('需要在 main 中初始化');
+  throw UnimplementedError('Must be initialized in main');
 });
 
-/// 串口路径 provider
+/// Serial port path provider
 final serialPortProvider = NotifierProvider<SerialPortNotifier, String>(SerialPortNotifier.new);
 
 class SerialPortNotifier extends Notifier<String> {
@@ -31,10 +31,10 @@ final vupClientProvider = Provider<VupClient>((ref) {
   return VupClient();
 });
 
-/// 连接状态
+/// Connection state
 enum DeviceConnectionState { disconnected, connecting, connected, error }
 
-/// 连接状态 provider
+/// Connection state provider
 final connectionStateProvider = NotifierProvider<ConnectionStateNotifier, DeviceConnectionState>(
   ConnectionStateNotifier.new,
 );
@@ -48,7 +48,7 @@ class ConnectionStateNotifier extends Notifier<DeviceConnectionState> {
   }
 }
 
-/// 连接错误信息 provider
+/// Connection error message provider
 final connectionErrorProvider = NotifierProvider<ConnectionErrorNotifier, String?>(ConnectionErrorNotifier.new);
 
 class ConnectionErrorNotifier extends Notifier<String?> {
@@ -60,7 +60,7 @@ class ConnectionErrorNotifier extends Notifier<String?> {
   }
 }
 
-/// EPC 标签数据模型
+/// EPC tag data model
 @immutable
 class EpcTag {
   final String epc;
@@ -75,10 +75,10 @@ class EpcTag {
   }
 }
 
-/// 盘存状态
+/// Inventory state
 enum InventoryState { idle, running, stopping }
 
-/// 盘存状态 provider
+/// Inventory state provider
 final inventoryStateProvider = NotifierProvider<InventoryStateNotifier, InventoryState>(InventoryStateNotifier.new);
 
 class InventoryStateNotifier extends Notifier<InventoryState> {
@@ -90,7 +90,7 @@ class InventoryStateNotifier extends Notifier<InventoryState> {
   }
 }
 
-/// 功率 provider (默认值 30 dBm，范围一般为 0-33 dBm)
+/// Power provider (default value 30 dBm, range typically 0-33 dBm)
 final powerProvider = NotifierProvider<PowerNotifier, int>(PowerNotifier.new);
 
 class PowerNotifier extends Notifier<int> {
@@ -105,10 +105,10 @@ class PowerNotifier extends Notifier<int> {
   }
 }
 
-/// 功率设置状态
+/// Power setting state
 enum PowerSettingState { idle, setting, success, error }
 
-/// 功率设置状态 provider
+/// Power setting state provider
 final powerSettingStateProvider = NotifierProvider<PowerSettingStateNotifier, PowerSettingState>(
   PowerSettingStateNotifier.new,
 );
@@ -122,7 +122,7 @@ class PowerSettingStateNotifier extends Notifier<PowerSettingState> {
   }
 }
 
-/// 功率设置错误信息 provider
+/// Power setting error message provider
 final powerErrorProvider = NotifierProvider<PowerErrorNotifier, String?>(PowerErrorNotifier.new);
 
 class PowerErrorNotifier extends Notifier<String?> {
@@ -134,14 +134,14 @@ class PowerErrorNotifier extends Notifier<String?> {
   }
 }
 
-/// EPC 列表 provider
+/// EPC list provider
 final epcListProvider = NotifierProvider<EpcListNotifier, List<EpcTag>>(EpcListNotifier.new);
 
 class EpcListNotifier extends Notifier<List<EpcTag>> {
   @override
   List<EpcTag> build() => [];
 
-  /// 从 AutoModeListenResponse 添加标签
+  /// Add tag from AutoModeListenResponse
   void addTagFromAutoMode(pb.AutoModeListenResponse response) {
     final epcHex = response.ePC;
     if (epcHex.isEmpty) return;
@@ -149,12 +149,12 @@ class EpcListNotifier extends Notifier<List<EpcTag>> {
     final existingIndex = state.indexWhere((t) => t.epc == epcHex);
 
     if (existingIndex >= 0) {
-      // 更新已存在的标签
+      // Update existing tag
       final existing = state[existingIndex];
       final updated = existing.copyWith(rssi: response.rSSI, ant: response.ant, readCount: existing.readCount + 1);
       state = [...state]..[existingIndex] = updated;
     } else {
-      // 添加新标签
+      // Add new tag
       state = [...state, EpcTag(epc: epcHex, rssi: response.rSSI, ant: response.ant)];
     }
   }
@@ -164,13 +164,13 @@ class EpcListNotifier extends Notifier<List<EpcTag>> {
   }
 }
 
-/// 自动模式监听订阅
+/// Auto mode listening subscription
 StreamSubscription<pb.AutoModeListenResponse>? _autoModeSubscription;
 
-/// 盘存运行标志
+/// Inventory running flag
 bool _isInventoryRunning = false;
 
-/// 连接设备
+/// Connect device
 Future<void> connectDevice(WidgetRef ref, String port) async {
   final client = ref.read(vupClientProvider);
   final prefs = ref.read(sharedPreferencesProvider);
@@ -182,16 +182,16 @@ Future<void> connectDevice(WidgetRef ref, String port) async {
     await client.connect(port, 115200);
     await prefs.setString('serial_port', port);
 
-    // 连接成功后，开始自动模式监听以接收标签数据
+    // After successful connection, start auto mode listening to receive tag data
     _autoModeSubscription = client.startAutoModeListenCurrent().listen(
       (response) {
-        // 只有在盘存运行时才处理标签数据
+        // Only process tag data when inventory is running
         if (_isInventoryRunning && response.ePC.isNotEmpty) {
           ref.read(epcListProvider.notifier).addTagFromAutoMode(response);
         }
       },
       onError: (e) {
-        // 监听出错时不影响连接状态
+        // Listening errors do not affect connection state
       },
     );
 
@@ -202,16 +202,16 @@ Future<void> connectDevice(WidgetRef ref, String port) async {
   }
 }
 
-/// 断开设备
+/// Disconnect device
 Future<void> disconnectDevice(WidgetRef ref) async {
   final client = ref.read(vupClientProvider);
 
-  // 先停止盘存
+  // Stop inventory first
   if (ref.read(inventoryStateProvider) == InventoryState.running) {
     await stopInventory(ref);
   }
 
-  // 停止自动模式监听
+  // Stop auto mode listening
   try {
     await client.stopAutoModeListen();
     await client.stopAuto();
@@ -227,7 +227,7 @@ Future<void> disconnectDevice(WidgetRef ref) async {
   ref.read(connectionStateProvider.notifier).set(DeviceConnectionState.disconnected);
 }
 
-/// 开始盘存
+/// Start inventory
 Future<void> startInventory(WidgetRef ref) async {
   final client = ref.read(vupClientProvider);
 
@@ -236,19 +236,19 @@ Future<void> startInventory(WidgetRef ref) async {
 
   _isInventoryRunning = true;
 
-  // 循环调用 m100MutilInventory 直到 _isInventoryRunning 为 false
+  // Loop calling m100MutilInventory until _isInventoryRunning is false
   _runInventoryLoop(ref, client);
 }
 
-/// 盘存循环
+/// Inventory loop
 Future<void> _runInventoryLoop(WidgetRef ref, VupClient client) async {
   while (_isInventoryRunning) {
     try {
       await client.m100MutilInventory(times: 1);
-      // 短暂延迟避免过于频繁的调用
+      // Brief delay to avoid too frequent calls
       await Future.delayed(const Duration(milliseconds: 50));
     } catch (e) {
-      // 发生错误时停止盘存
+      // Stop inventory when error occurs
       _isInventoryRunning = false;
       ref.read(inventoryStateProvider.notifier).set(InventoryState.idle);
       break;
@@ -256,17 +256,17 @@ Future<void> _runInventoryLoop(WidgetRef ref, VupClient client) async {
   }
 }
 
-/// 停止盘存
+/// Stop inventory
 Future<void> stopInventory(WidgetRef ref) async {
   ref.read(inventoryStateProvider.notifier).set(InventoryState.stopping);
 
-  // 设置标志位停止盘存循环
+  // Set flag to stop inventory loop
   _isInventoryRunning = false;
 
   ref.read(inventoryStateProvider.notifier).set(InventoryState.idle);
 }
 
-/// 设置功率
+/// Set power
 Future<void> setPower(WidgetRef ref, int power) async {
   final client = ref.read(vupClientProvider);
   final prefs = ref.read(sharedPreferencesProvider);
@@ -275,16 +275,16 @@ Future<void> setPower(WidgetRef ref, int power) async {
   ref.read(powerErrorProvider.notifier).set(null);
 
   try {
-    // 设置天线1的功率（ant=1）
+    // Set antenna 1 power (ant=1)
     await client.setPower(ant: 1, power: power);
 
-    // 持久化保存功率值
+    // Persistently save power value
     await prefs.setInt('power', power);
     ref.read(powerProvider.notifier).set(power);
 
     ref.read(powerSettingStateProvider.notifier).set(PowerSettingState.success);
 
-    // 2秒后重置状态
+    // Reset status after 2 seconds
     Future.delayed(const Duration(seconds: 2), () {
       ref.read(powerSettingStateProvider.notifier).set(PowerSettingState.idle);
     });

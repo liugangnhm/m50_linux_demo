@@ -36,7 +36,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final powerSettingState = ref.watch(powerSettingStateProvider);
     final powerError = ref.watch(powerErrorProvider);
 
-    // 初始化串口路径
+    // Initialize serial port path
     if (_portController.text.isEmpty && serialPort.isNotEmpty) {
       _portController.text = serialPort;
     }
@@ -54,14 +54,14 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // 连接区域
+            // Connection area
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('串口连接', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text('Serial Connection', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
                     Row(
                       children: [
@@ -69,8 +69,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                           child: TextField(
                             controller: _portController,
                             decoration: const InputDecoration(
-                              labelText: '串口路径',
-                              hintText: '例如: COM3 或 /dev/ttyUSB0',
+                              labelText: 'Serial Port',
+                              hintText: 'e.g.: COM3 or /dev/ttyUSB0',
                               border: OutlineInputBorder(),
                             ),
                             enabled: !isConnected && !isConnecting,
@@ -95,7 +95,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     height: 20,
                                     child: CircularProgressIndicator(strokeWidth: 2),
                                   )
-                                : Text(isConnected ? '断开' : '连接'),
+                                : Text(isConnected ? 'Disconnect' : 'Connect'),
                           ),
                         ),
                       ],
@@ -108,10 +108,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          const Text('已连接', style: TextStyle(color: Colors.green)),
+                          const Text('Connected', style: TextStyle(color: Colors.green)),
                           if (isInventoryRunning) ...[
                             const SizedBox(width: 8),
-                            Text('(盘点中，无法断开)', style: TextStyle(color: Colors.orange[700], fontSize: 12)),
+                            Text('(Cannot disconnect during inventory)', style: TextStyle(color: Colors.orange[700], fontSize: 12)),
                           ],
                         ],
                       ),
@@ -121,7 +121,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            // 功率设置区域
+            // Power setting area
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -131,7 +131,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('功率设置', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const Text('Power Setting', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         Text('$power dBm'),
                       ],
                     ),
@@ -167,31 +167,31 @@ class _HomePageState extends ConsumerState<HomePage> {
                         children: [
                           SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
                           SizedBox(width: 8),
-                          Text('正在设置功率...'),
+                          Text('Setting power...'),
                         ],
                       ),
                     ],
                     if (powerSettingState == PowerSettingState.success) ...[
                       const SizedBox(height: 8),
-                      const Text('功率设置成功', style: TextStyle(color: Colors.green)),
+                      const Text('Power setting successful', style: TextStyle(color: Colors.green)),
                     ],
                     if (powerSettingState == PowerSettingState.error && powerError != null) ...[
                       const SizedBox(height: 8),
-                      Text('功率设置失败: $powerError', style: const TextStyle(color: Colors.red)),
+                      Text('Power setting failed: $powerError', style: const TextStyle(color: Colors.red)),
                     ],
                     if (!isConnected) ...[
                       const SizedBox(height: 8),
-                      Text('请先连接设备', style: TextStyle(color: Colors.grey[600])),
+                      Text('Please connect device first', style: TextStyle(color: Colors.grey[600])),
                     ] else if (isInventoryRunning) ...[
                       const SizedBox(height: 8),
-                      Text('盘点中，无法调整功率', style: TextStyle(color: Colors.orange[700])),
+                      Text('Cannot adjust power during inventory', style: TextStyle(color: Colors.orange[700])),
                     ],
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            // 盘存区域
+            // Inventory area
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -201,8 +201,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('盘存', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        Text('标签数量: ${epcList.length}'),
+                        const Text('Inventory', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text('Tag Count: ${epcList.length}'),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -214,7 +214,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 ? null
                                 : () => startInventory(ref),
                             icon: const Icon(Icons.play_arrow),
-                            label: const Text('开始盘存'),
+                            label: const Text('Start Inventory'),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -228,7 +228,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     child: CircularProgressIndicator(strokeWidth: 2),
                                   )
                                 : const Icon(Icons.stop),
-                            label: Text(isInventoryStopping ? '停止中...' : '停止盘存'),
+                            label: Text(isInventoryStopping ? 'Stopping...' : 'Stop Inventory'),
                           ),
                         ),
                       ],
@@ -238,11 +238,11 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            // EPC 列表
+            // EPC list
             Expanded(
               child: Card(
                 child: epcList.isEmpty
-                    ? const Center(child: Text('暂无标签数据'))
+                    ? const Center(child: Text('No tag data'))
                     : ListView.builder(
                         itemCount: epcList.length,
                         itemBuilder: (context, index) {
@@ -261,7 +261,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget _buildEpcListTile(BuildContext context, EpcTag tag) {
     return ListTile(
       title: Text(tag.epc, style: const TextStyle(fontFamily: 'monospace')),
-      subtitle: Text('RSSI: ${tag.rssi} dBm | 天线: ${tag.ant} | 读取次数: ${tag.readCount}'),
+      subtitle: Text('RSSI: ${tag.rssi} dBm | Antenna: ${tag.ant} | Read Count: ${tag.readCount}'),
       trailing: const Icon(Icons.chevron_right),
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => TagDetailPage(epc: tag.epc)));
